@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 // Recommended color palette
 const Color kPrimaryColor = Colors.white;
-const Color kSecondaryColor = Color(0xFF388E3C); // Material green
+const Color kSecondaryColor = Color(0xFF10b981); // Material green
 const Color kAccentColor = Color(0xFF8E24AA); // Material purple
 
 final ThemeData appTheme = ThemeData(
@@ -19,12 +19,12 @@ final ThemeData appTheme = ThemeData(
     tertiary: kAccentColor,
   ),
   appBarTheme: const AppBarTheme(
-    backgroundColor: kPrimaryColor,
-    foregroundColor: Colors.black,
+    backgroundColor: kSecondaryColor, // Use transparent for gradient
+    foregroundColor: Colors.transparent,
     elevation: 2,
-    iconTheme: IconThemeData(color: kSecondaryColor),
+    iconTheme: IconThemeData(color: kPrimaryColor),
     titleTextStyle: TextStyle(
-      color: Colors.black,
+      color: kPrimaryColor,
       fontWeight: FontWeight.bold,
       fontSize: 20,
     ),
@@ -37,15 +37,11 @@ final ThemeData appTheme = ThemeData(
     style: ElevatedButton.styleFrom(
       backgroundColor: kSecondaryColor,
       foregroundColor: Colors.white,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
     ),
   ),
   textButtonTheme: TextButtonThemeData(
-    style: TextButton.styleFrom(
-      foregroundColor: kAccentColor,
-    ),
+    style: TextButton.styleFrom(foregroundColor: kAccentColor),
   ),
   iconTheme: const IconThemeData(color: kAccentColor),
   inputDecorationTheme: InputDecorationTheme(
@@ -60,11 +56,12 @@ final ThemeData appTheme = ThemeData(
   cardTheme: CardThemeData(
     color: kPrimaryColor,
     elevation: 2,
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(16),
-    ),
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
   ),
-  progressIndicatorTheme: const ProgressIndicatorThemeData(
-    color: kAccentColor,
+  progressIndicatorTheme: const ProgressIndicatorThemeData(color: kAccentColor),
+  searchBarTheme: SearchBarThemeData(
+    backgroundColor: WidgetStatePropertyAll(kPrimaryColor.withValues(alpha: 0.3)),
+    textStyle: WidgetStatePropertyAll(TextStyle(color: Colors.black)),
+    hintStyle: WidgetStatePropertyAll(TextStyle(color: kPrimaryColor)),
   ),
 );

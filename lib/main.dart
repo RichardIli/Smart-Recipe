@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:smart_recipe_app/Themes/themes.dart';
 import 'package:smart_recipe_app/routes/routes.dart';
 
 void main() {
@@ -13,7 +14,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      theme: ThemeData.dark(useMaterial3: true),
+      theme: appTheme,
       onGenerateRoute: generateRoute,
       initialRoute: homeScreen,
     );

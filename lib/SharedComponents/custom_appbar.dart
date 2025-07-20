@@ -20,30 +20,31 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      backgroundColor: Colors.white,
-      elevation: 2,
+      elevation: 5,
       titleSpacing: 0,
+      shadowColor: Colors.black,
       title: Row(
         children: [
           // Logo on the left
-          if (logoAsset != null)
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0),
-              child: Image.asset(
-                logoAsset!,
-                height: 32,
-              ),
-            ),
+          // if (logoAsset != null)
+          //   Padding(
+          //     padding: const EdgeInsets.symmetric(horizontal: 8.0),
+          //     child: Image.asset(logoAsset!, height: 32),
+          //   ),
           // SearchBar widget in the middle
           Expanded(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0),
-              child: SearchBar(
-                controller: searchController,
-                hintText: 'Search...',
-                leading: const Icon(Icons.search),
-                elevation: WidgetStatePropertyAll(0),
-                backgroundColor: WidgetStatePropertyAll(Colors.grey[200]),
+            child: Center(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                child: SizedBox(
+                  height: kToolbarHeight * 0.6, // Reduce height of SearchBar
+                  child: SearchBar(
+                    controller: searchController,
+                    hintText: 'Search...',
+                    leading: const Icon(Icons.search),
+                    elevation: WidgetStatePropertyAll(0),
+                  ),
+                ),
               ),
             ),
           ),
