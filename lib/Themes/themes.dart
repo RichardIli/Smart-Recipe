@@ -55,7 +55,7 @@ final ThemeData appTheme = ThemeData(
   ),
   cardTheme: CardThemeData(
     color: kPrimaryColor,
-    elevation: 2,
+    elevation: 5,
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
   ),
   progressIndicatorTheme: const ProgressIndicatorThemeData(color: kAccentColor),
