@@ -1,21 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:smart_recipe_app/Models/recipe.dart';
 import 'package:smart_recipe_app/Themes/themes.dart';
 
 class DailyInspirationCard extends StatelessWidget {
   const DailyInspirationCard({
     super.key,
-    required this.foodCategory,
-    required this.foodName,
-    required this.preparationTime,
-    required this.process,
-    required this.difficulty,
+    required this.recipe,
   });
 
-  final String foodCategory;
-  final String foodName;
-  final String preparationTime;
-  final String process;
-  final String difficulty;
+  final Recipe recipe;
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +35,7 @@ class DailyInspirationCard extends StatelessWidget {
             Expanded(
               child: Center(
                 child: Text(
-                  foodCategory,
+                  recipe.foodCategory,
                   style: Theme.of(context).textTheme.displaySmall!.copyWith(
                     // Adjusting the text color based on the card color
                     // to ensure good contrast and readability
@@ -71,15 +64,15 @@ class DailyInspirationCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 spacing: 10,
                 children: [
-                  Text(foodName, style: Theme.of(context).textTheme.titleLarge),
+                  Text(recipe.foodName, style: Theme.of(context).textTheme.titleLarge),
                   Text(
-                    preparationTime,
+                    recipe.preparationTime,
                     style: Theme.of(
                       context,
                     ).textTheme.titleMedium!.copyWith(color: Colors.grey[600]),
                   ),
                   Text(
-                    difficulty,
+                    recipe.difficulty,
                     style: Theme.of(context).textTheme.titleMedium,
                   ),
                 ],

@@ -51,6 +51,7 @@ final ThemeData appTheme = ThemeData(
       borderRadius: BorderRadius.circular(24.0),
       borderSide: BorderSide.none,
     ),
+    iconColor: Colors.grey,
     hintStyle: const TextStyle(color: Colors.grey),
   ),
   cardTheme: CardThemeData(
@@ -60,7 +61,9 @@ final ThemeData appTheme = ThemeData(
   ),
   progressIndicatorTheme: const ProgressIndicatorThemeData(color: kAccentColor),
   searchBarTheme: SearchBarThemeData(
-    backgroundColor: WidgetStatePropertyAll(kPrimaryColor.withValues(alpha: 0.3)),
+    backgroundColor: WidgetStatePropertyAll(
+      kPrimaryColor.withValues(alpha: 0.3),
+    ),
     textStyle: WidgetStatePropertyAll(TextStyle(color: Colors.black)),
     hintStyle: WidgetStatePropertyAll(TextStyle(color: kPrimaryColor)),
   ),

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:smart_recipe_app/Screens/Widgets/actions_grid.dart';
-import 'package:smart_recipe_app/Screens/Widgets/daily_inspiration_card.dart';
-import 'package:smart_recipe_app/Screens/Widgets/daily_inspiration_cards_generator.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:smart_recipe_app/Blocs/HomeScreenBlocs/GenerateDailyRecipeCubit/generate_daily_recipe_cubit.dart';
+import 'package:smart_recipe_app/Screens/QuickActionsSection/actions_grid.dart';
+import 'package:smart_recipe_app/Screens/DailyInspirationRecipeSection/daily_inspiration_cards_generator.dart';
+import 'package:smart_recipe_app/Screens/DailyInspirationRecipeSection/daily_inspiration_shimmer.dart';
+import 'package:smart_recipe_app/Screens/DailyInspirationRecipeSection/failed_to_fetch_recipe_card.dart';
 import 'package:smart_recipe_app/SharedComponents/custom_appbar.dart';
-import 'package:smart_recipe_app/Themes/themes.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -39,7 +41,28 @@ class HomeScreen extends StatelessWidget {
                   style: Theme.of(context).textTheme.titleLarge,
                 ),
                 // Daily Inspiration Cards List
-                DailyInspirationCardsGenerator(),
+                BlocBuilder<GenerateDailyRecipeCubit, GenerateDailyRecipeState>(
+                  builder: (context, state) {
+                    if (state is GenerateDailyRecipeInitial) {
+                      // Trigger the cubit to fetch recipes when the screen loads
+                      context
+                          .read<GenerateDailyRecipeCubit>()
+                          .generateDailyRecipe();
+                      return DailyInspirationShimmer();
+                    } else if (state is GenerateDailyRecipeLoading) {
+                      return DailyInspirationShimmer();
+                    } else if (state is GenerateDailyRecipeSuccess) {
+                      return DailyInspirationCardsGenerator(
+                        recipes: state.recipes,
+                      );
+                    } else if (state is GenerateDailyRecipeFailure) {
+                      return FailedToFetchRecipeCard(
+                        error: state.error.toString(),
+                      );
+                    }
+                    return Container();
+                  },
+                ),
                 Text(
                   "Based on Your Ingredients",
                   style: Theme.of(context).textTheme.titleLarge,
