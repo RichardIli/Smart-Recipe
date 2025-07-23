@@ -23,6 +23,7 @@ final ThemeData appTheme = ThemeData(
     foregroundColor: Colors.transparent,
     elevation: 2,
     iconTheme: IconThemeData(color: kPrimaryColor),
+    centerTitle: true,
     titleTextStyle: TextStyle(
       color: kPrimaryColor,
       fontWeight: FontWeight.bold,
@@ -45,13 +46,18 @@ final ThemeData appTheme = ThemeData(
   ),
   iconTheme: const IconThemeData(color: kAccentColor),
   inputDecorationTheme: InputDecorationTheme(
-    filled: true,
-    fillColor: Colors.grey[200],
+    // filled: true,
+    // fillColor: Colors.grey[200],
     border: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(24.0),
-      borderSide: BorderSide.none,
+      borderRadius: BorderRadius.circular(50.0),
+      borderSide: BorderSide(color: Colors.grey[100]!, width: 1),
+    ),
+    focusedBorder: OutlineInputBorder(
+      borderSide: BorderSide(color: kSecondaryColor),
+      borderRadius: BorderRadius.circular(50),
     ),
     iconColor: Colors.grey,
+    prefixIconColor: Colors.grey,
     hintStyle: const TextStyle(color: Colors.grey),
   ),
   cardTheme: CardThemeData(

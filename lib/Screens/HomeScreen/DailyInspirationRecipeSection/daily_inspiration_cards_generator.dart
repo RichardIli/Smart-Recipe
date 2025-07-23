@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:smart_recipe_app/Models/recipe.dart';
-import 'package:smart_recipe_app/Screens/DailyInspirationRecipeSection/daily_inspiration_card.dart';
+import 'package:smart_recipe_app/SharedComponents/recipe_card.dart';
 
 class DailyInspirationCardsGenerator extends StatelessWidget {
   const DailyInspirationCardsGenerator({super.key, required this.recipes});
@@ -29,7 +29,7 @@ class DailyInspirationCardsGenerator extends StatelessWidget {
         // ],
         children: List.generate(recipes.length, (index) {
           final recipe = recipes[index];
-          return DailyInspirationCard(recipe: recipe);
+          return RecipeCard(recipe: recipe);
         }),
       ),
     );

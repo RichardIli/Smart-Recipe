@@ -2,13 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:smart_recipe_app/Models/recipe.dart';
 import 'package:smart_recipe_app/Themes/themes.dart';
 
-class DailyInspirationCard extends StatelessWidget {
-  const DailyInspirationCard({
-    super.key,
-    required this.recipe,
-  });
+class RecipeCard extends StatelessWidget {
+  const RecipeCard({super.key, required this.recipe});
 
   final Recipe recipe;
+  // TODO: make an icon and function to add the recipe to favorites. Make it optional
 
   @override
   Widget build(BuildContext context) {
@@ -64,7 +62,10 @@ class DailyInspirationCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 spacing: 10,
                 children: [
-                  Text(recipe.foodName, style: Theme.of(context).textTheme.titleLarge),
+                  Text(
+                    recipe.foodName,
+                    style: Theme.of(context).textTheme.titleLarge,
+                  ),
                   Text(
                     recipe.preparationTime,
                     style: Theme.of(

@@ -2,8 +2,8 @@
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 
-class DailyInspirationShimmer extends StatelessWidget {
-  const DailyInspirationShimmer({super.key});
+class RecipeShimmer extends StatelessWidget {
+  const RecipeShimmer({super.key});
 
   @override
   Widget build(BuildContext context) {
