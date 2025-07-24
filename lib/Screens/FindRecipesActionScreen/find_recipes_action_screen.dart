@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_recipe_app/Blocs/HomeScreenBlocs/GenerateDailyRecipeCubit/generate_daily_recipe_cubit.dart';
+import 'package:smart_recipe_app/Blocs/HomeScreenBlocs/GenerateRecipeByCategoryCubit/generate_recipe_by_category_cubit.dart';
 import 'package:smart_recipe_app/Models/recipe.dart';
 import 'package:smart_recipe_app/SharedComponents/failed_to_fetch_recipe_card.dart';
 import 'package:smart_recipe_app/SharedComponents/recipe_card.dart';
 import 'package:smart_recipe_app/SharedComponents/recipe_shimmer.dart';
-import 'package:smart_recipe_app/Themes/themes.dart';
 
 class FindRecipesActionScreen extends StatelessWidget {
   const FindRecipesActionScreen({super.key});
@@ -28,14 +28,13 @@ class FindRecipesActionScreen extends StatelessWidget {
                   decoration: InputDecoration(
                     prefixIcon: Icon(Icons.search),
                     hintText: "Search for recipes (e.g., 'pasta', 'salad')",
-                    
                   ),
                   onFieldSubmitted: (value) => {
                     if (formKey.currentState!.validate())
                       {
                         context
-                            .read<GenerateDailyRecipeCubit>()
-                            .generateDailyRecipe(),
+                            .read<GenerateRecipeByCategoryCubit>()
+                            .generateRecipeByCategory(value.trim()),
                       },
                   },
                   validator: (value) {
@@ -45,12 +44,14 @@ class FindRecipesActionScreen extends StatelessWidget {
                     return null;
                   },
                 ),
-                BlocBuilder<GenerateDailyRecipeCubit, GenerateDailyRecipeState>(
+                BlocBuilder<
+                  GenerateRecipeByCategoryCubit,
+                  GenerateRecipeByCategoryState
+                >(
                   builder: (context, state) {
-                    // TODO: Make a bloc/cubit for generating recipe based on the inputed recipe
-                    if (state is GenerateDailyRecipeLoading) {
+                    if (state is GenerateRecipeByCategoryLoading) {
                       return RecipeShimmer();
-                    } else if (state is GenerateDailyRecipeSuccess) {
+                    } else if (state is GenerateRecipeByCategorySuccess) {
                       final List<Recipe> recipes = state.recipes;
                       return GridView.builder(
                         shrinkWrap: true,
@@ -63,7 +64,7 @@ class FindRecipesActionScreen extends StatelessWidget {
                           return RecipeCard(recipe: recipes[index]);
                         },
                       );
-                    } else if (state is GenerateDailyRecipeFailure) {
+                    } else if (state is GenerateRecipeByCategoryFailure) {
                       return FailedToFetchRecipeCard(error: state.error);
                     }
                     return Container();

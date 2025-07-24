@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_recipe_app/Blocs/HomeScreenBlocs/GenerateDailyRecipeCubit/generate_daily_recipe_cubit.dart';
+import 'package:smart_recipe_app/Blocs/HomeScreenBlocs/GenerateRecipeByCategoryCubit/generate_recipe_by_category_cubit.dart';
+import 'package:smart_recipe_app/Blocs/HomeScreenBlocs/SearchRecipeByNameCubot/search_recipe_by_name_cubit.dart';
 import 'package:smart_recipe_app/Repositories/recipe_generator_repository.dart';
 import 'package:smart_recipe_app/Themes/themes.dart';
 import 'package:smart_recipe_app/routes/routes.dart';
@@ -20,10 +22,24 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return RepositoryProvider(
       create: (context) => RecipeGeneratorRepository(),
-      child: BlocProvider(
-        create: (context) => GenerateDailyRecipeCubit(
-          RepositoryProvider.of<RecipeGeneratorRepository>(context),
-        ),
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (context) => GenerateDailyRecipeCubit(
+              RepositoryProvider.of<RecipeGeneratorRepository>(context),
+            ),
+          ),
+          BlocProvider(
+            create: (context) => SearchRecipeByNameCubit(
+              RepositoryProvider.of<RecipeGeneratorRepository>(context),
+            ),
+          ),
+          BlocProvider(
+            create: (context) => GenerateRecipeByCategoryCubit(
+              RepositoryProvider.of<RecipeGeneratorRepository>(context),
+            ),
+          ),
+        ],
         child: MaterialApp(
           title: 'Flutter Demo',
           theme: appTheme,

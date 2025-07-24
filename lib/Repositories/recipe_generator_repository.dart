@@ -4,19 +4,18 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:smart_recipe_app/Models/recipe.dart';
 
 class RecipeGeneratorRepository {
-  Future<List<Recipe>> generateRecipe({
-    required String ingredients,
-    required String category,
+  Future<List<Recipe>> _postAndParseRecipes({
+    required String? endpoint,
+    Map<String, dynamic>? body,
   }) async {
-    final apiEndpoint = dotenv.env['GENERATE_RECIPE_API_ENDPOINT'];
-    if (apiEndpoint == null || apiEndpoint.isEmpty) {
+    if (endpoint == null || endpoint.isEmpty) {
       throw Exception('API endpoint not found in .env file');
     }
-    final url = Uri.parse(apiEndpoint);
+    final url = Uri.parse(endpoint);
     final response = await http.post(
       url,
       headers: {'Content-Type': 'application/json'},
-      body: jsonEncode({'ingredients': ingredients, 'category': category}),
+      body: body != null ? jsonEncode(body) : null,
     );
     if (response.statusCode == 200) {
       final List<dynamic> data = jsonDecode(response.body);
@@ -24,27 +23,41 @@ class RecipeGeneratorRepository {
           .map((item) => Recipe.fromJson(item as Map<String, dynamic>))
           .toList();
     } else {
-      throw Exception('Failed to fetch recipes: \\${response.statusCode}');
+      throw Exception(
+        'Failed to fetch recipes: ${response.statusCode}\n${response.body}',
+      );
     }
   }
 
-  Future<List<Recipe>> generateDailyRecipe() async {
-    final apiEndpoint = dotenv.env['GENERATE_DAILY_RECIPE_API_ENDPOINT'];
-    if (apiEndpoint == null || apiEndpoint.isEmpty) {
-      throw Exception('API endpoint not found in .env file');
-    }
-    final url = Uri.parse(apiEndpoint);
-    final response = await http.post(
-      url,
-      headers: {'Content-Type': 'application/json'},
+  Future<List<Recipe>> generateRecipe({
+    required String ingredients,
+    required String category,
+  }) {
+    return _postAndParseRecipes(
+      endpoint: dotenv.env['GENERATE_RECIPE_API_ENDPOINT'],
+      body: {'ingredients': ingredients, 'category': category},
     );
-    if (response.statusCode == 200) {
-      final List<dynamic> data = jsonDecode(response.body);
-      return data
-          .map((item) => Recipe.fromJson(item as Map<String, dynamic>))
-          .toList();
-    } else {
-      throw Exception('Failed to fetch recipes: \\${response.statusCode}');
-    }
+  }
+
+  Future<List<Recipe>> generateDailyRecipe() {
+    return _postAndParseRecipes(
+      endpoint: dotenv.env['GENERATE_DAILY_RECIPE_API_ENDPOINT'],
+    );
+  }
+
+  Future<List<Recipe>> generateRecipeByName({required String recipeName}) {
+    return _postAndParseRecipes(
+      endpoint: dotenv.env['GENERATE_RECIPE_BY_NAME_API_ENDPOINT'],
+      body: {'foodName': recipeName},
+    );
+  }
+
+  Future<List<Recipe>> generateRecipeByCategory({
+    required String foodCategory,
+  }) {
+    return _postAndParseRecipes(
+      endpoint: dotenv.env['GENERATE_RECIPE_BY_CATEGORY_API_ENDPOINT'],
+      body: {'foodCategory': foodCategory},
+    );
   }
 }

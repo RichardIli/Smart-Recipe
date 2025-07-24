@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:smart_recipe_app/Blocs/HomeScreenBlocs/SearchRecipeByNameCubot/search_recipe_by_name_cubit.dart';
+import 'package:smart_recipe_app/routes/routes.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final VoidCallback? onActionPressed;
@@ -43,6 +46,15 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                     hintText: 'Search...',
                     leading: const Icon(Icons.search),
                     elevation: WidgetStatePropertyAll(0),
+                    onSubmitted: (searchTerm) {
+                      if (searchTerm.trim().isNotEmpty) {
+                        context
+                            .read<SearchRecipeByNameCubit>()
+                            .searchRecipeByName(searchTerm.trim());
+                        // Navigate to the searched screen after enterring the search term
+                        Navigator.of(context).pushNamed(searchedRecipeScreen);
+                      }
+                    },
                   ),
                 ),
               ),

@@ -21,7 +21,7 @@ class RecipeCard extends StatelessWidget {
     final selectedCardColor =
         (cardColor..shuffle()).first; // Randomly select a color from the list
     return SizedBox.square(
-      dimension: 300,
+      dimension: 200,
       child: Card(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         color: selectedCardColor,
@@ -64,6 +64,7 @@ class RecipeCard extends StatelessWidget {
                 children: [
                   Text(
                     recipe.foodName,
+                    overflow: TextOverflow.ellipsis,
                     style: Theme.of(context).textTheme.titleLarge,
                   ),
                   Text(
