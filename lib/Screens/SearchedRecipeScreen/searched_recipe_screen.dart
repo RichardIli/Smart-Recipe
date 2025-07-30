@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:smart_recipe_app/Blocs/HomeScreenBlocs/SearchRecipeByNameCubot/search_recipe_by_name_cubit.dart';
+import 'package:smart_recipe_app/Blocs/SearchRecipeByNameCubit/search_recipe_by_name_cubit.dart';
 import 'package:smart_recipe_app/Models/recipe.dart';
-import 'package:smart_recipe_app/SharedComponents/recipe_card.dart';
+import 'package:smart_recipe_app/SharedComponents/recipe_list_view_builder.dart';
 import 'package:smart_recipe_app/SharedComponents/recipe_shimmer.dart';
 
 class SearchedRecipeScreen extends StatelessWidget {
@@ -25,7 +25,7 @@ class SearchedRecipeScreen extends StatelessWidget {
                       return CustomColumn(
                         formKey: formKey,
                         initialValue: state.recipeName,
-                        stateUi: RecipeShimmer(),
+                        stateUi: RecipeShimmerList(),
                       );
                     } else if (state is SearchRecipeByNameFailure) {
                       return CustomColumn(
@@ -69,6 +69,7 @@ class CustomColumn extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      spacing: 10,
       children: [
         TextFormField(
           cursorColor: Colors.black,
@@ -109,15 +110,16 @@ class SearchedItemLoaded extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GridView.builder(
-      shrinkWrap: true,
-      gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-        maxCrossAxisExtent: 300,
-      ),
-      itemCount: recipes.length,
-      itemBuilder: (context, index) {
-        return RecipeCard(recipe: recipes[index]);
-      },
-    );
+    // return GridView.builder(
+    //   shrinkWrap: true,
+    //   gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+    //     maxCrossAxisExtent: 300,
+    //   ),
+    //   itemCount: recipes.length,
+    //   itemBuilder: (context, index) {
+    //     return RecipeCard(recipe: recipes[index]);
+    //   },
+    // );
+    return RecipeListViewBuilder(recipes: recipes);
   }
 }

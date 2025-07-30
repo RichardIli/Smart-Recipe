@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:smart_recipe_app/Blocs/HomeScreenBlocs/GenerateDailyRecipeCubit/generate_daily_recipe_cubit.dart';
+import 'package:smart_recipe_app/Blocs/GenerateDailyRecipeCubit/generate_daily_recipe_cubit.dart';
+import 'package:smart_recipe_app/Blocs/GenerateRecipeByIngredientsCubit/generate_recipe_by_ingredients_cubit.dart';
+import 'package:smart_recipe_app/Blocs/IngredientsListCubit/ingredients_list_cubit.dart';
 import 'package:smart_recipe_app/Screens/HomeScreen/QuickActionsSection/actions_grid.dart';
 import 'package:smart_recipe_app/Screens/HomeScreen/DailyInspirationRecipeSection/daily_inspiration_cards_generator.dart';
+import 'package:smart_recipe_app/SharedComponents/recipe_list_view_builder.dart';
 import 'package:smart_recipe_app/SharedComponents/recipe_shimmer.dart';
 import 'package:smart_recipe_app/SharedComponents/failed_to_fetch_recipe_card.dart';
 import 'package:smart_recipe_app/SharedComponents/custom_appbar.dart';
@@ -59,6 +62,9 @@ class HomeScreen extends StatelessWidget {
                     } else if (state is GenerateDailyRecipeFailure) {
                       return FailedToFetchRecipeCard(
                         error: state.error.toString(),
+                        refresh: () => context
+                            .read<GenerateDailyRecipeCubit>()
+                            .generateDailyRecipe(),
                       );
                     }
                     return Container();
@@ -67,6 +73,35 @@ class HomeScreen extends StatelessWidget {
                 Text(
                   "Based on Your Ingredients",
                   style: Theme.of(context).textTheme.titleLarge,
+                ),
+                BlocBuilder<
+                  GenerateRecipeByIngredientsCubit,
+                  GenerateRecipeByIngredientsState
+                >(
+                  builder: (context, state) {
+                    if (state is GenerateRecipeByIngredientsInitial) {
+                      return RecipeShimmer();
+                    } else if (state is GenerateRecipeByIngredientsLoading) {
+                      return RecipeShimmer();
+                    } else if (state is GenerateRecipeByIngredientsSuccess) {
+                      final recipes = state.recipes;
+                      return RecipeListViewBuilder(recipes: recipes);
+                    } else if (state is GenerateRecipeByIngredientsFailure) {
+                      final error = state.error;
+                      return FailedToFetchRecipeCard(
+                        error: error,
+                        refresh: () => context
+                            .read<GenerateRecipeByIngredientsCubit>()
+                            .generateRecipes(
+                              (context.read<IngredientsListCubit>().state
+                                      as IngredientsList)
+                                  .ingredients,
+                              null,
+                            ),
+                      );
+                    }
+                    return Container();
+                  },
                 ),
               ],
             ),

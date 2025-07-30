@@ -31,7 +31,7 @@ class RecipeGeneratorRepository {
 
   Future<List<Recipe>> generateRecipe({
     required String ingredients,
-    required String category,
+    required String? category,
   }) {
     return _postAndParseRecipes(
       endpoint: dotenv.env['GENERATE_RECIPE_API_ENDPOINT'],

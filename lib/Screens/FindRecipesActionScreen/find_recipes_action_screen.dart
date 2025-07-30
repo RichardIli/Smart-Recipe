@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:smart_recipe_app/Blocs/HomeScreenBlocs/GenerateDailyRecipeCubit/generate_daily_recipe_cubit.dart';
-import 'package:smart_recipe_app/Blocs/HomeScreenBlocs/GenerateRecipeByCategoryCubit/generate_recipe_by_category_cubit.dart';
+import 'package:smart_recipe_app/Blocs/GenerateRecipeByCategoryCubit/generate_recipe_by_category_cubit.dart';
 import 'package:smart_recipe_app/Models/recipe.dart';
 import 'package:smart_recipe_app/SharedComponents/failed_to_fetch_recipe_card.dart';
-import 'package:smart_recipe_app/SharedComponents/recipe_card.dart';
+import 'package:smart_recipe_app/SharedComponents/recipe_list_view_builder.dart';
 import 'package:smart_recipe_app/SharedComponents/recipe_shimmer.dart';
 
 class FindRecipesActionScreen extends StatelessWidget {
@@ -50,22 +49,15 @@ class FindRecipesActionScreen extends StatelessWidget {
                 >(
                   builder: (context, state) {
                     if (state is GenerateRecipeByCategoryLoading) {
-                      return RecipeShimmer();
+                      return RecipeShimmerList();
                     } else if (state is GenerateRecipeByCategorySuccess) {
                       final List<Recipe> recipes = state.recipes;
-                      return GridView.builder(
-                        shrinkWrap: true,
-                        physics: NeverScrollableScrollPhysics(),
-                        gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                          maxCrossAxisExtent: 300,
-                        ),
-                        itemCount: recipes.length, // Example item count
-                        itemBuilder: (context, index) {
-                          return RecipeCard(recipe: recipes[index]);
-                        },
-                      );
+                      return RecipeListViewBuilder(recipes: recipes);
                     } else if (state is GenerateRecipeByCategoryFailure) {
-                      return FailedToFetchRecipeCard(error: state.error);
+                      return FailedToFetchRecipeCard(
+                        error: state.error,
+                        refresh: null,
+                      );
                     }
                     return Container();
                   },

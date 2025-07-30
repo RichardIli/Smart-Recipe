@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mobkit_dashed_border/mobkit_dashed_border.dart';
+import 'package:smart_recipe_app/Blocs/GenerateRecipeByIngredientsCubit/generate_recipe_by_ingredients_cubit.dart';
+import 'package:smart_recipe_app/Blocs/IngredientsListCubit/ingredients_list_cubit.dart';
 import 'package:smart_recipe_app/Themes/themes.dart';
 
 class WhatsOnYourFridgeActionWindow extends StatelessWidget {
@@ -7,22 +10,6 @@ class WhatsOnYourFridgeActionWindow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ingredients = [
-      "milk",
-      "eggs",
-      "flour",
-      "sugar",
-      "butter",
-      "salt",
-      "pepper",
-      "chicken",
-      "tomato",
-      "onion",
-      "garlic",
-      "cheese",
-      "spinach",
-      "carrot",
-    ];
     final recommendedIngredients = ["milk", "eggs", "flour", "sugar", "butter"];
     return AlertDialog(
       title: const Text("Whats on your fridge?"),
@@ -32,6 +19,7 @@ class WhatsOnYourFridgeActionWindow extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           spacing: 10,
           children: [
+            // TextField for adding ingredients
             TextFormField(
               cursorColor: Colors.black,
               decoration: InputDecoration(
@@ -43,6 +31,7 @@ class WhatsOnYourFridgeActionWindow extends StatelessWidget {
                 ),
               ),
             ),
+            // Container for displaying added ingredients
             Container(
               padding: const EdgeInsets.all(10),
               height: MediaQuery.of(context).size.height * 0.2,
@@ -55,38 +44,54 @@ class WhatsOnYourFridgeActionWindow extends StatelessWidget {
                 ),
                 borderRadius: BorderRadius.circular(5),
               ),
-              child: SingleChildScrollView(
-                child: Wrap(
-                  spacing: 10,
-                  children: List.generate(ingredients.length, (index) {
-                    return Chip(
-                      side: BorderSide.none,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(50),
-                      ),
-                      label: Text(
-                        ingredients[index],
-                        style: Theme.of(
-                          context,
-                        ).textTheme.bodyLarge!.copyWith(color: kSecondaryColor),
-                      ),
-                      color: WidgetStatePropertyAll(
-                        kSecondaryColor.withValues(
-                          alpha: 0.2,
-                        ), // lighter version of kSecondaryColor
-                      ),
+              child: BlocBuilder<IngredientsListCubit, IngredientsListState>(
+                builder: (context, state) {
+                  if (state is IngredientsList) {
+                    // If the state is IngredientsList, display the ingredients
+                    final ingredients = state.ingredients;
+                    return SingleChildScrollView(
+                      child: Wrap(
+                        spacing: 10,
+                        children: List.generate(ingredients.length, (index) {
+                          return Chip(
+                            side: BorderSide.none,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(50),
+                            ),
+                            label: Text(
+                              ingredients[index],
+                              style: Theme.of(context).textTheme.bodyLarge!
+                                  .copyWith(color: kSecondaryColor),
+                            ),
+                            color: WidgetStatePropertyAll(
+                              kSecondaryColor.withValues(
+                                alpha: 0.2,
+                              ), // lighter version of kSecondaryColor
+                            ),
 
-                      deleteIcon: Icon(
-                        Icons.close_rounded,
-                        color: kSecondaryColor,
+                            deleteIcon: Icon(
+                              Icons.close_rounded,
+                              color: kSecondaryColor,
+                            ),
+                            onDeleted: () {
+                              // Logic to remove the ingredient
+                              context
+                                  .read<IngredientsListCubit>()
+                                  .removeIngredient(ingredients[index]);
+                            },
+                          );
+                        }),
                       ),
-                      onDeleted: () {},
                     );
-                  }),
-                ),
+                  }
+                  // If the state is not IngredientsList, show a loading indicator
+                  return Center(child: CircularProgressIndicator());
+                },
               ),
             ),
+            // ActionChip for quick adding ingredients
             Text("Quick Add", style: Theme.of(context).textTheme.bodyLarge),
+            // Wrap with ActionChips for recommended ingredients
             Wrap(
               spacing: 10,
               children: List.generate(recommendedIngredients.length, (index) {
@@ -96,6 +101,9 @@ class WhatsOnYourFridgeActionWindow extends StatelessWidget {
                     label: Text(recommendedIngredients[index]),
                     onPressed: () {
                       // Logic to add the ingredient
+                      context.read<IngredientsListCubit>().addIngredient([
+                        recommendedIngredients[index],
+                      ]);
                     },
                     backgroundColor: Colors.grey[200],
                     labelStyle: Theme.of(
@@ -130,13 +138,11 @@ class WhatsOnYourFridgeActionWindow extends StatelessWidget {
             ),
           ),
           onPressed: () {
-            // TODO: make a bloc that generates recipes based on the ingredients added, Then will close the window and will be scrolled on the bottom of the screen.
-            // Make a bloc that will hold the list of ingredients and will generate recipes based on the ingredients added.
-            // it should be like this:
-
-            // {"ingredients" = ["milk", "eggs", "flour", "sugar", "butter"],"recipes" = [{recipe1, recipe2,...}]}
-            // make sure that the ingredients persists in the bloc state
-            // and the recipes are generated based on the ingredients added.
+            context.read<GenerateRecipeByIngredientsCubit>().generateRecipes(
+              (context.read<IngredientsListCubit>().state as IngredientsList)
+                  .ingredients,
+              null,
+            );
             Navigator.pop(context);
           },
           child: Text("Find Recipes"),
