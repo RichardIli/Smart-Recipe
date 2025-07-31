@@ -40,37 +40,34 @@ class RecipeShimmerList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: ListView.builder(
-        shrinkWrap: true,
-        itemCount: 5,
-        itemBuilder: (context, index) {
-          return Shimmer.fromColors(
-            baseColor: Colors.grey[300]!,
-            highlightColor: Colors.grey[100]!,
-            child: Padding(
-              padding: const EdgeInsets.only(bottom: 10.0),
-              child: Material(
-                borderRadius: BorderRadius.circular(16.0),
-                elevation: 5,
-                child: ListTile(
-                  // tileColor: kSecondaryColor.withValues(alpha: .2),
-                  title: Text(""),
-                  subtitle: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    spacing: 10.0,
-                    children: [
-                      Text("", style: TextStyle(fontWeight: FontWeight.bold)),
-                      Text("", style: TextStyle(color: Colors.grey[600])),
-                      Text(""),
-                    ],
-                  ),
+    return ListView.builder(
+      itemCount: 2,
+      itemBuilder: (context, index) {
+        return Shimmer.fromColors(
+          baseColor: Colors.grey[300]!,
+          highlightColor: Colors.grey[100]!,
+          child: Padding(
+            padding: const EdgeInsets.only(bottom: 10.0),
+            child: Material(
+              borderRadius: BorderRadius.circular(16.0),
+              elevation: 5,
+              child: ListTile(
+                // tileColor: kSecondaryColor.withValues(alpha: .2),
+                title: Text(""),
+                subtitle: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  spacing: 10.0,
+                  children: [
+                    Text("", style: TextStyle(fontWeight: FontWeight.bold)),
+                    Text("", style: TextStyle(color: Colors.grey[600])),
+                    Text(""),
+                  ],
                 ),
               ),
             ),
-          );
-        },
-      ),
+          ),
+        );
+      },
     );
   }
 }

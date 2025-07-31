@@ -43,24 +43,26 @@ class FindRecipesActionScreen extends StatelessWidget {
                     return null;
                   },
                 ),
-                BlocBuilder<
-                  GenerateRecipeByCategoryCubit,
-                  GenerateRecipeByCategoryState
-                >(
-                  builder: (context, state) {
-                    if (state is GenerateRecipeByCategoryLoading) {
-                      return RecipeShimmerList();
-                    } else if (state is GenerateRecipeByCategorySuccess) {
-                      final List<Recipe> recipes = state.recipes;
-                      return RecipeListViewBuilder(recipes: recipes);
-                    } else if (state is GenerateRecipeByCategoryFailure) {
-                      return FailedToFetchRecipeCard(
-                        error: state.error,
-                        refresh: null,
-                      );
-                    }
-                    return Container();
-                  },
+                Expanded(
+                  child: BlocBuilder<
+                    GenerateRecipeByCategoryCubit,
+                    GenerateRecipeByCategoryState
+                  >(
+                    builder: (context, state) {
+                      if (state is GenerateRecipeByCategoryLoading) {
+                        return RecipeShimmerList();
+                      } else if (state is GenerateRecipeByCategorySuccess) {
+                        final List<Recipe> recipes = state.recipes;
+                        return RecipeListViewBuilder(recipes: recipes);
+                      } else if (state is GenerateRecipeByCategoryFailure) {
+                        return FailedToFetchRecipeCard(
+                          error: state.error,
+                          refresh: null,
+                        );
+                      }
+                      return Container();
+                    },
+                  ),
                 ),
               ],
             ),

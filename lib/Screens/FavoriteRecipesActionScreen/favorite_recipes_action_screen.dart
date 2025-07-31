@@ -4,8 +4,8 @@ import 'package:smart_recipe_app/Blocs/FavoritesCubit/favorites_cubit.dart';
 import 'package:smart_recipe_app/Models/recipe.dart';
 import 'package:smart_recipe_app/SharedComponents/recipe_list_view_builder.dart';
 
-class FindRecipesActionScreen extends StatelessWidget {
-  const FindRecipesActionScreen({super.key});
+class FavoriteRecipeScreen extends StatelessWidget {
+  const FavoriteRecipeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -92,7 +92,7 @@ class CustomColumn extends StatelessWidget {
             return null;
           },
         ),
-        stateUi,
+        Expanded(child: stateUi),
       ],
     );
   }
@@ -110,16 +110,6 @@ class SearchedItemLoaded extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // return GridView.builder(
-    //   shrinkWrap: true,
-    //   gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-    //     maxCrossAxisExtent: 300,
-    //   ),
-    //   itemCount: recipes.length,
-    //   itemBuilder: (context, index) {
-    //     return RecipeCard(recipe: recipes[index]);
-    //   },
-    // );
     return RecipeListViewBuilder(recipes: recipes);
   }
 }

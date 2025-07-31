@@ -74,46 +74,54 @@ class HomeScreen extends StatelessWidget {
                   "Based on Your Ingredients",
                   style: Theme.of(context).textTheme.titleLarge,
                 ),
-                BlocBuilder<
-                  GenerateRecipeByIngredientsCubit,
-                  GenerateRecipeByIngredientsState
-                >(
-                  builder: (context, state) {
-                    if (state is GenerateRecipeByIngredientsInitial) {
-                      return Center(
-                        child: Card(
-                          elevation: 5,
-                          child: Padding(
-                            padding: const EdgeInsets.all(10.0),
-                            child: Text(
-                              "Please add ingredients to the fridge to see recipes based on them.",
-                              style: Theme.of(context).textTheme.bodyLarge,
-                            ),
-                          ),
-                        ),
-                      );
-                    } else if (state is GenerateRecipeByIngredientsLoading) {
-                      return RecipeShimmerList();
-                    } else if (state is GenerateRecipeByIngredientsSuccess) {
-                      return SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.6,
-                        child: RecipeListViewBuilder(recipes: state.recipes),
-                      );
-                    } else if (state is GenerateRecipeByIngredientsFailure) {
-                      return FailedToFetchRecipeCard(
-                        error: state.error,
-                        refresh: () => context
-                            .read<GenerateRecipeByIngredientsCubit>()
-                            .generateRecipes(
-                              (context.read<IngredientsListCubit>().state
-                                      as IngredientsList)
-                                  .ingredients,
-                              null,
-                            ),
-                      );
-                    }
-                    return Container();
-                  },
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.6,
+                  child:
+                      BlocBuilder<
+                        GenerateRecipeByIngredientsCubit,
+                        GenerateRecipeByIngredientsState
+                      >(
+                        builder: (context, state) {
+                          if (state is GenerateRecipeByIngredientsInitial) {
+                            return Center(
+                              child: Card(
+                                elevation: 5,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(10.0),
+                                  child: Text(
+                                    "Please add ingredients to the fridge to see recipes based on them.",
+                                    style: Theme.of(
+                                      context,
+                                    ).textTheme.bodyLarge,
+                                  ),
+                                ),
+                              ),
+                            );
+                          } else if (state
+                              is GenerateRecipeByIngredientsLoading) {
+                            return RecipeShimmerList();
+                          } else if (state
+                              is GenerateRecipeByIngredientsSuccess) {
+                            return RecipeListViewBuilder(
+                              recipes: state.recipes,
+                            );
+                          } else if (state
+                              is GenerateRecipeByIngredientsFailure) {
+                            return FailedToFetchRecipeCard(
+                              error: state.error,
+                              refresh: () => context
+                                  .read<GenerateRecipeByIngredientsCubit>()
+                                  .generateRecipes(
+                                    (context.read<IngredientsListCubit>().state
+                                            as IngredientsList)
+                                        .ingredients,
+                                    null,
+                                  ),
+                            );
+                          }
+                          return Container();
+                        },
+                      ),
                 ),
               ],
             ),

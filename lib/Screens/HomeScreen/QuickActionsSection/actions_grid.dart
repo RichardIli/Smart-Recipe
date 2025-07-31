@@ -43,14 +43,14 @@ class ActionsGrid extends StatelessWidget {
             'ontap': () {
               Navigator.pushNamed(context, findRecipesActionScreen);
             },
-          },
-          // TODO: make a screen for the favorites and make a bloc/cubit for storing the favorites. 
-          // Use the bloc/cubit because it only need to be persisted in runtime. no need to store it in the database.
-          {
+          },{
             'bgColor': Colors.yellow[100],
             'lblColor': Colors.yellow[700],
             'lbl': "My Favorites",
             'icon': Icons.favorite_outline_rounded,
+            'ontap':(){
+              Navigator.pushNamed(context, favoriteRecipeScreen);
+            }
           },
         ];
         final action = actions[index];

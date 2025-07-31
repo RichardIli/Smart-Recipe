@@ -29,7 +29,7 @@ class DailyInspirationCardsGenerator extends StatelessWidget {
         // ],
         children: List.generate(recipes.length, (index) {
           final recipe = recipes[index];
-          return RecipeCard(recipe: recipe);
+          return RecipeCard(recipes: recipes, index: index, recipe: recipe);
         }),
       ),
     );
