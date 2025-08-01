@@ -2,6 +2,8 @@
 
 Smart Recipe App is a cross-platform Flutter application designed to make your cooking journey smarter and easier. Whether you’re a home cook or a food enthusiast, this app helps you discover, search, and manage recipes tailored to your preferences and available ingredients. With a modern UI, robust state management, and seamless user experience, Smart Recipe App is your personal kitchen assistant.
 
+![Smart Recipe Demo](assets/SmartRecipe.gif)
+
 ## Description
 
 Smart Recipe App empowers users to:
@@ -73,6 +75,8 @@ lib/
   Themes/               # App theming
   routes/               # App routing
   main.dart             # App entry point
+assets/
+  SmartRecipe.gif       # Demo GIF
 ```
 
 ## Dependencies

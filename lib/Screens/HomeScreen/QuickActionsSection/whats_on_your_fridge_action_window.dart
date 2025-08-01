@@ -30,6 +30,8 @@ class WhatsOnYourFridgeActionWindow extends StatelessWidget {
                   borderRadius: BorderRadius.circular(50),
                 ),
               ),
+              onFieldSubmitted: (value) =>
+                  context.read<IngredientsListCubit>().addIngredient([value]),
             ),
             // Container for displaying added ingredients
             Container(

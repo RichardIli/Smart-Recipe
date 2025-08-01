@@ -51,6 +51,7 @@ class MyApp extends StatelessWidget {
           BlocProvider(create: (context) => FavoritesCubit()),
         ],
         child: MaterialApp(
+          debugShowCheckedModeBanner: false,
           title: 'Flutter Demo',
           theme: appTheme,
           onGenerateRoute: generateRoute,
