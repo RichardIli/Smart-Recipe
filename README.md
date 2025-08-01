@@ -39,7 +39,7 @@ Whether you want to reduce food waste, try something new, or just make meal plan
 
 1. **Clone the repository:**
    ```bash
-   git clone https://github.com/yourusername/smart_recipe_app.git
+   git clone https://github.com/RichardIli/Smart-Recipe.git or git@github.com:RichardIli/Smart-Recipe.git
    cd smart_recipe_app
    ```
 
@@ -87,14 +87,6 @@ assets/
 - [shimmer](https://pub.dev/packages/shimmer)
 - [page_transition](https://pub.dev/packages/page_transition)
 - [mobkit_dashed_border](https://pub.dev/packages/mobkit_dashed_border)
-
-## Contributing
-
-Contributions are welcome! Please open issues and submit pull requests for improvements or bug fixes.
-
-## License
-
-This project is licensed under the MIT License.
 
 ---
 
