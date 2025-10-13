@@ -13,7 +13,15 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await dotenv.load();
+  try {
+    // ensure the file name matches the asset above
+    await dotenv.load(fileName: ".env");
+  } catch (e, st) {
+    // don't crash the app in release if .env is missing
+    // you can log to console or use a remote crash logger instead
+    // ignore: avoid_print
+    print('Failed to load .env: $e\n$st');
+  }
   runApp(const MyApp());
 }
 

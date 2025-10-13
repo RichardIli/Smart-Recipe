@@ -20,43 +20,46 @@ class FailedToFetchRecipeCard extends StatelessWidget {
       child: SizedBox.square(
         dimension: 200,
         child: Card(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Icon(
-                Icons.error_outline,
-                color: Theme.of(context).colorScheme.error,
-                size: 48,
-              ),
-              const SizedBox(height: 16),
-              Text(
-                'Oops! Something went wrong.',
-                style: Theme.of(context).textTheme.titleLarge?.copyWith(
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(
+                  Icons.error_outline,
                   color: Theme.of(context).colorScheme.error,
-                  fontWeight: FontWeight.bold,
+                  size: 48,
                 ),
-                textAlign: TextAlign.center,
-              ),
-              // const SizedBox(height: 8),
-              // Text(
-              //   error,
-              //   style: Theme.of(context).textTheme.bodyMedium,
-              //   textAlign: TextAlign.center,
-              // ),
-              const SizedBox(height: 16),
-              refresh != null
-                  ? ElevatedButton.icon(
-                      onPressed: refresh,
-                      icon: const Icon(Icons.refresh),
-                      label: Text('Try Again'),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Theme.of(context).colorScheme.error,
-                        foregroundColor: Colors.white,
-                      ),
-                    )
-                  : Text('Search Again'),
-            ],
+                const SizedBox(height: 16),
+                Text(
+                  // 'Oops! Something went wrong.\n$error',
+                  'Oops! Something went wrong.',
+                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                    color: Theme.of(context).colorScheme.error,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                // const SizedBox(height: 8),
+                // Text(
+                //   error,
+                //   style: Theme.of(context).textTheme.bodyMedium,
+                //   textAlign: TextAlign.center,
+                // ),
+                const SizedBox(height: 16),
+                refresh != null
+                    ? ElevatedButton.icon(
+                        onPressed: refresh,
+                        icon: const Icon(Icons.refresh),
+                        label: Text('Try Again'),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Theme.of(context).colorScheme.error,
+                          foregroundColor: Colors.white,
+                        ),
+                      )
+                    : Text('Search Again'),
+              ],
+            ),
           ),
         ),
       ),
