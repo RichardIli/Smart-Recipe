@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:smart_recipe_app/Blocs/FavoritesCubit/favorites_cubit.dart';
-import 'package:smart_recipe_app/Blocs/GenerateDailyRecipeCubit/generate_daily_recipe_cubit.dart';
-import 'package:smart_recipe_app/Blocs/GenerateRecipeByCategoryCubit/generate_recipe_by_category_cubit.dart';
-import 'package:smart_recipe_app/Blocs/GenerateRecipeByIngredientsCubit/generate_recipe_by_ingredients_cubit.dart';
-import 'package:smart_recipe_app/Blocs/IngredientsListCubit/ingredients_list_cubit.dart';
-import 'package:smart_recipe_app/Blocs/SearchRecipeByNameCubit/search_recipe_by_name_cubit.dart';
-import 'package:smart_recipe_app/Repositories/recipe_generator_repository.dart';
-import 'package:smart_recipe_app/Themes/themes.dart';
-import 'package:smart_recipe_app/routes/routes.dart';
+import 'package:smart_recipe_app/Pressentation/Blocs/FavoritesCubit/favorites_cubit.dart';
+import 'package:smart_recipe_app/Pressentation/Blocs/GenerateDailyRecipeCubit/generate_daily_recipe_cubit.dart';
+import 'package:smart_recipe_app/Pressentation/Blocs/GenerateRecipeByCategoryCubit/generate_recipe_by_category_cubit.dart';
+import 'package:smart_recipe_app/Pressentation/Blocs/GenerateRecipeByIngredientsCubit/generate_recipe_by_ingredients_cubit.dart';
+import 'package:smart_recipe_app/Pressentation/Blocs/IngredientsListCubit/ingredients_list_cubit.dart';
+import 'package:smart_recipe_app/Pressentation/Blocs/SearchRecipeByNameCubit/search_recipe_by_name_cubit.dart';
+import 'package:smart_recipe_app/Data/Repositories/recipe_generator_repository.dart';
+import 'package:smart_recipe_app/Config/Themes/themes.dart';
+import 'package:smart_recipe_app/Config/routes/routes.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 void main() async {
