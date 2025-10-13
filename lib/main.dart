@@ -52,7 +52,7 @@ class MyApp extends StatelessWidget {
         ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
-          title: 'Flutter Demo',
+          title: 'Smart Recipe',
           theme: appTheme,
           onGenerateRoute: generateRoute,
           initialRoute: homeScreen,
