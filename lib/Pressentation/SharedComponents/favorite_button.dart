@@ -18,7 +18,7 @@ class FavoriteButton extends StatelessWidget {
           final isFavorite = favoriteRecipes.contains(recipe);
           return ElevatedButton.icon(
             style: ButtonStyle(
-              backgroundColor: WidgetStatePropertyAll(kPrimaryColor),
+              backgroundColor: WidgetStatePropertyAll(Theme.of(context).colorScheme.primary,),
             ),
             onPressed: () {
               if (isFavorite) {

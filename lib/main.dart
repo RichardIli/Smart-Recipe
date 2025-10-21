@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:smart_recipe_app/Data/Repositories/image_fetcher_repository.dart';
 import 'package:smart_recipe_app/Pressentation/Blocs/FavoritesCubit/favorites_cubit.dart';
 import 'package:smart_recipe_app/Pressentation/Blocs/GenerateDailyRecipeCubit/generate_daily_recipe_cubit.dart';
 import 'package:smart_recipe_app/Pressentation/Blocs/GenerateRecipeByCategoryCubit/generate_recipe_by_category_cubit.dart';
@@ -22,6 +24,19 @@ void main() async {
     // ignore: avoid_print
     print('Failed to load .env: $e\n$st');
   }
+
+  // Set the system UI overlay style to match the app theme
+  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+    // Set the status bar color to transparent
+    statusBarColor: Colors.transparent,
+
+    // Set status bar icons to light (white) for contrast
+    statusBarIconBrightness: Brightness.light, // For Android
+
+    // Set status bar text/icons to light (white) for contrast
+    // This setting is primarily for iOS but good practice to include
+    statusBarBrightness: Brightness.dark,
+  ));
   runApp(const MyApp());
 }
 
@@ -31,8 +46,11 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return RepositoryProvider(
-      create: (context) => RecipeGeneratorRepository(),
+    return MultiRepositoryProvider(
+      providers: [
+        RepositoryProvider(create: (context) => RecipeGeneratorRepository()),
+        RepositoryProvider(create: (context) => ImageFetcherRepository()),
+      ],
       child: MultiBlocProvider(
         providers: [
           BlocProvider(
@@ -61,7 +79,9 @@ class MyApp extends StatelessWidget {
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
           title: 'Smart Recipe',
-          theme: appTheme,
+          theme: lightTheme, // Use the light theme
+          // darkTheme: darkTheme, // No need for dark theme
+          themeMode: ThemeMode.light, // Always use light theme
           onGenerateRoute: generateRoute,
           initialRoute: homeScreen,
         ),

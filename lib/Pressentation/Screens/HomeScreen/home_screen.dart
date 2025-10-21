@@ -8,7 +8,7 @@ import 'package:smart_recipe_app/Pressentation/Screens/HomeScreen/DailyInspirati
 import 'package:smart_recipe_app/Pressentation/SharedComponents/recipe_list_view_builder.dart';
 import 'package:smart_recipe_app/Pressentation/SharedComponents/recipe_shimmer.dart';
 import 'package:smart_recipe_app/Pressentation/SharedComponents/failed_to_fetch_recipe_card.dart';
-import 'package:smart_recipe_app/Pressentation/SharedComponents/custom_appbar.dart';
+import 'package:smart_recipe_app/Pressentation/SharedComponents/search.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -18,43 +18,45 @@ class HomeScreen extends StatelessWidget {
     final TextEditingController searchController = TextEditingController();
     return SafeArea(
       child: Scaffold(
-        appBar: CustomAppBar(
-          onActionPressed: () {
-            // TODO: Implement action when the icon is pressed
-          },
-          searchController: searchController,
-          logoAsset: 'assets/logo.png', // Replace with your logo asset path
-          actionIcon: Icons.settings_rounded,
-        ),
         body: Padding(
           padding: const EdgeInsets.all(10.0),
           child: SingleChildScrollView(
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.start,
               spacing: 10,
               children: [
-                Text(
-                  "Quick Actions",
-                  style: Theme.of(context).textTheme.titleLarge,
-                ),
+                // search function/feature
+                Search(searchController: searchController),
+
                 // Actions grid
                 ActionsGrid(),
+
+                // daily recipe
                 Text(
                   "Daily Inspiration",
                   style: Theme.of(context).textTheme.titleLarge,
                 ),
+
                 // Daily Inspiration Cards List
                 BlocBuilder<GenerateDailyRecipeCubit, GenerateDailyRecipeState>(
                   builder: (context, state) {
+                    final double dimension =
+                        MediaQuery.of(context).size.width * 0.8;
                     if (state is GenerateDailyRecipeInitial) {
                       // Trigger the cubit to fetch recipes when the screen loads
                       context
                           .read<GenerateDailyRecipeCubit>()
                           .generateDailyRecipe();
-                      return RecipeShimmer();
+                      return RecipeShimmer(
+                        shimerWidgetNumber: 2,
+                        boxDimension: dimension,
+                      );
                     } else if (state is GenerateDailyRecipeLoading) {
-                      return RecipeShimmer();
+                      return RecipeShimmer(
+                        shimerWidgetNumber: 2,
+                        boxDimension: dimension,
+                      );
                     } else if (state is GenerateDailyRecipeSuccess) {
                       return DailyInspirationCardsGenerator(
                         recipes: state.recipes,

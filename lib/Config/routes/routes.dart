@@ -14,6 +14,7 @@ const String searchedRecipeScreen = "searchedRecipeScreen";
 
 const String favoriteRecipeScreen = "favoriteRecipeScreen";
 
+
 Route? generateRoute(RouteSettings settings) {
   switch (settings.name) {
     case homeScreen:
@@ -33,6 +34,7 @@ Route? generateRoute(RouteSettings settings) {
         type: PageTransitionType.fade,
         child: FavoriteRecipeScreen(),
       );
+
     default:
       if (kDebugMode) {
         print("error in route");

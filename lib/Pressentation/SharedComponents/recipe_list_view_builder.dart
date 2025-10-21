@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_recipe_app/Data/Models/recipe.dart';
+import 'package:smart_recipe_app/Data/Repositories/image_fetcher_repository.dart';
+import 'package:smart_recipe_app/Pressentation/Blocs/FetchImageCubit/fetch_image_cubit.dart';
 import 'package:smart_recipe_app/Pressentation/SharedComponents/favorite_button.dart';
 import 'package:smart_recipe_app/Pressentation/SharedComponents/recipe_details_window.dart';
 
@@ -39,17 +42,22 @@ class RecipeListViewBuilder extends StatelessWidget {
                   Text(recipes[index].difficulty),
                 ],
               ),
-              // leading: CircleAvatar(
-              //   backgroundImage: NetworkImage(recipes[index].imageUrl),
-              // ),
               onTap: () {
                 showDialog(
                   barrierDismissible: false,
                   context: context,
                   builder: (context) {
-                    return RecipeDetailsWindow(
-                      recipe: recipes[index],
-                      index: index,
+                    return BlocProvider(
+                      create: (context) => FetchImageCubit(
+                        imageFetcherRepository:
+                            RepositoryProvider.of<ImageFetcherRepository>(
+                              context,
+                            ),
+                      ),
+                      child: RecipeDetailsWindow(
+                        recipe: recipes[index],
+                        index: index,
+                      ),
                     );
                   },
                 );

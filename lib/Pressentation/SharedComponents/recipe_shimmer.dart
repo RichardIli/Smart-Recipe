@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 
 class RecipeShimmer extends StatelessWidget {
-  const RecipeShimmer({super.key});
+  const RecipeShimmer({super.key, this.shimerWidgetNumber, this.boxDimension});
+
+  final int? shimerWidgetNumber;
+  final double? boxDimension;
 
   @override
   Widget build(BuildContext context) {
@@ -10,7 +13,7 @@ class RecipeShimmer extends StatelessWidget {
       baseColor: Colors.grey[300]!,
       highlightColor: Colors.grey[100]!,
       child: SizedBox.square(
-        dimension: 200,
+        dimension: boxDimension ?? 200,
         child: Card(
           color: Colors.white,
           child: Align(
@@ -23,13 +26,17 @@ class RecipeShimmer extends StatelessWidget {
         ),
       ),
     );
+
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         spacing: 10,
-        children: [shimmerWidget, shimmerWidget],
+        children: List.generate(shimerWidgetNumber ?? 1, (index) {
+          return shimmerWidget;
+        }),
+        // [shimmerWidget, shimmerWidget],
       ),
     );
   }

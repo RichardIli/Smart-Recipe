@@ -5,13 +5,29 @@ import 'package:smart_recipe_app/Pressentation/Blocs/GenerateRecipeByIngredients
 import 'package:smart_recipe_app/Pressentation/Blocs/IngredientsListCubit/ingredients_list_cubit.dart';
 import 'package:smart_recipe_app/Config/Themes/themes.dart';
 
-class WhatsOnYourFridgeActionWindow extends StatelessWidget {
+class WhatsOnYourFridgeActionWindow extends StatefulWidget {
   const WhatsOnYourFridgeActionWindow({super.key});
 
   @override
+  State<WhatsOnYourFridgeActionWindow> createState() =>
+      _WhatsOnYourFridgeActionWindowState();
+}
+
+class _WhatsOnYourFridgeActionWindowState
+    extends State<WhatsOnYourFridgeActionWindow> {
+  final TextEditingController _textEditingController = TextEditingController();
+  final recommendedIngredients = ["milk", "eggs", "flour", "sugar", "butter"];
+
+  @override
+  void dispose() {
+    _textEditingController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final recommendedIngredients = ["milk", "eggs", "flour", "sugar", "butter"];
     return AlertDialog(
+      insetPadding: EdgeInsets.symmetric(horizontal: 10),
       title: const Text("Whats on your fridge?"),
       content: IntrinsicHeight(
         child: Column(
@@ -21,17 +37,22 @@ class WhatsOnYourFridgeActionWindow extends StatelessWidget {
           children: [
             // TextField for adding ingredients
             TextFormField(
+              controller: _textEditingController,
               cursorColor: Colors.black,
               decoration: InputDecoration(
                 prefixIcon: Icon(Icons.add_rounded),
                 hintText: "Add ingredient (e.g., 'milk', 'eggs')",
                 focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: kSecondaryColor),
+                  borderSide: BorderSide(
+                    color: Theme.of(context).colorScheme.secondary,
+                  ),
                   borderRadius: BorderRadius.circular(50),
                 ),
               ),
-              onFieldSubmitted: (value) =>
-                  context.read<IngredientsListCubit>().addIngredient([value]),
+              onFieldSubmitted: (value) {
+                context.read<IngredientsListCubit>().addIngredient(value);
+                _textEditingController.clear(); // Clear the text field
+              },
             ),
             // Container for displaying added ingredients
             Container(
@@ -63,17 +84,23 @@ class WhatsOnYourFridgeActionWindow extends StatelessWidget {
                             label: Text(
                               ingredients[index],
                               style: Theme.of(context).textTheme.bodyLarge!
-                                  .copyWith(color: kSecondaryColor),
+                                  .copyWith(
+                                    color: Theme.of(
+                                      context,
+                                    ).colorScheme.secondary,
+                                  ),
                             ),
                             color: WidgetStatePropertyAll(
-                              kSecondaryColor.withValues(
+                              Theme.of(
+                                context,
+                              ).colorScheme.secondary.withValues(
                                 alpha: 0.2,
                               ), // lighter version of kSecondaryColor
                             ),
 
                             deleteIcon: Icon(
                               Icons.close_rounded,
-                              color: kSecondaryColor,
+                              color: Theme.of(context).colorScheme.secondary,
                             ),
                             onDeleted: () {
                               // Logic to remove the ingredient
@@ -103,9 +130,9 @@ class WhatsOnYourFridgeActionWindow extends StatelessWidget {
                     label: Text(recommendedIngredients[index]),
                     onPressed: () {
                       // Logic to add the ingredient
-                      context.read<IngredientsListCubit>().addIngredient([
+                      context.read<IngredientsListCubit>().addIngredient(
                         recommendedIngredients[index],
-                      ]);
+                      );
                     },
                     backgroundColor: Colors.grey[200],
                     labelStyle: Theme.of(
@@ -123,31 +150,43 @@ class WhatsOnYourFridgeActionWindow extends StatelessWidget {
         ),
       ),
       actions: [
-        ElevatedButton(
-          style: ButtonStyle(
-            backgroundColor: WidgetStatePropertyAll(Colors.grey[200]),
-            shape: WidgetStatePropertyAll(
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            ElevatedButton(
+              style: ButtonStyle(
+                backgroundColor: WidgetStatePropertyAll(Colors.grey[200]),
+                shape: WidgetStatePropertyAll(
+                  RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(50),
+                  ),
+                ),
+              ),
+              onPressed: () => Navigator.pop(context),
+              child: Text("Cancel", style: TextStyle(color: Colors.red)),
             ),
-          ),
-          onPressed: () => Navigator.pop(context),
-          child: Text("Cancel", style: TextStyle(color: Colors.black)),
-        ),
-        ElevatedButton(
-          style: ButtonStyle(
-            shape: WidgetStatePropertyAll(
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
+            ElevatedButton(
+              style: ButtonStyle(
+                shape: WidgetStatePropertyAll(
+                  RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(50),
+                  ),
+                ),
+              ),
+              onPressed: () {
+                context
+                    .read<GenerateRecipeByIngredientsCubit>()
+                    .generateRecipes(
+                      (context.read<IngredientsListCubit>().state
+                              as IngredientsList)
+                          .ingredients,
+                      null,
+                    );
+                Navigator.pop(context);
+              },
+              child: Text("Find Recipes"),
             ),
-          ),
-          onPressed: () {
-            context.read<GenerateRecipeByIngredientsCubit>().generateRecipes(
-              (context.read<IngredientsListCubit>().state as IngredientsList)
-                  .ingredients,
-              null,
-            );
-            Navigator.pop(context);
-          },
-          child: Text("Find Recipes"),
+          ],
         ),
       ],
     );
