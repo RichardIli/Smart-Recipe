@@ -8,11 +8,7 @@ import 'package:smart_recipe_app/Pressentation/SharedComponents/recipe_details_w
 import 'package:smart_recipe_app/Config/Themes/themes.dart';
 
 class RecipeCard extends StatelessWidget {
-  const RecipeCard({
-    super.key,
-    required this.index,
-    required this.recipe,
-  });
+  const RecipeCard({super.key, required this.index, required this.recipe});
 
   final int index;
   final Recipe recipe;
@@ -44,9 +40,11 @@ class RecipeCard extends StatelessWidget {
               barrierDismissible: false,
               context: context,
               builder: (context) {
-                final imageUrl = fetchImageCubit.state is FetchImageSuccess
-                    ? (fetchImageCubit.state as FetchImageSuccess).imageUrl
-                    : '';
+                // final imageUrl = fetchImageCubit.state is FetchImageSuccess
+                //     ? (fetchImageCubit.state as FetchImageSuccess).imageUrl
+                //     : '';
+                final imageUrl =
+                    (fetchImageCubit.state as FetchImageSuccess).imageUrl;
                 return RecipeDetailsWindow(
                   recipe: recipe,
                   index: index,

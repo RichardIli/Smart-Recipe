@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_recipe_app/Config/routes/routes.dart';
 import 'package:smart_recipe_app/Pressentation/Blocs/SearchRecipeByNameCubit/search_recipe_by_name_cubit.dart';
+import 'package:smart_recipe_app/Pressentation/Blocs/ToggleThemeCubit/toggle_theme_cubit.dart';
 
 class Search extends StatelessWidget {
-  const Search({super.key, this.onActionPressed, this.searchController});
+  const Search({super.key, this.searchController});
 
-  final VoidCallback? onActionPressed;
   final TextEditingController? searchController;
 
   @override
@@ -54,8 +54,19 @@ class Search extends StatelessWidget {
 
                 trailing: [
                   IconButton(
-                    icon: Icon(Icons.settings_rounded, color: Colors.black),
-                    onPressed: onActionPressed,
+                    icon: BlocBuilder<ToggleThemeCubit, ToggleThemeState>(
+                      builder: (context, state) {
+                        return Icon(
+                          state is ToggleThemeDark
+                              ? Icons.dark_mode_rounded
+                              : Icons.light_mode_rounded,
+                          color: Colors.black,
+                        );
+                      },
+                    ),
+                    onPressed: () {
+                      context.read<ToggleThemeCubit>().toggleTheme();
+                    },
                   ),
                   // maybe in the future change it to a mic icon for voice search
                 ],

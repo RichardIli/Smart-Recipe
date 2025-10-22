@@ -12,6 +12,7 @@ import 'package:smart_recipe_app/Data/Repositories/recipe_generator_repository.d
 import 'package:smart_recipe_app/Config/Themes/themes.dart';
 import 'package:smart_recipe_app/Config/routes/routes.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:smart_recipe_app/Pressentation/Blocs/ToggleThemeCubit/toggle_theme_cubit.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -25,18 +26,6 @@ void main() async {
     print('Failed to load .env: $e\n$st');
   }
 
-  // Set the system UI overlay style to match the app theme
-  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-    // Set the status bar color to transparent
-    statusBarColor: Colors.transparent,
-
-    // Set status bar icons to light (white) for contrast
-    statusBarIconBrightness: Brightness.light, // For Android
-
-    // Set status bar text/icons to light (white) for contrast
-    // This setting is primarily for iOS but good practice to include
-    statusBarBrightness: Brightness.dark,
-  ));
   runApp(const MyApp());
 }
 
@@ -75,15 +64,30 @@ class MyApp extends StatelessWidget {
             ),
           ),
           BlocProvider(create: (context) => FavoritesCubit()),
+          BlocProvider(create: (context) => ToggleThemeCubit()),
         ],
-        child: MaterialApp(
-          debugShowCheckedModeBanner: false,
-          title: 'Smart Recipe',
-          theme: lightTheme, // Use the light theme
-          // darkTheme: darkTheme, // No need for dark theme
-          themeMode: ThemeMode.light, // Always use light theme
-          onGenerateRoute: generateRoute,
-          initialRoute: homeScreen,
+        child: BlocBuilder<ToggleThemeCubit, ToggleThemeState>(
+          builder: (context, state) {
+            final isDarkMode = state is ToggleThemeDark;
+
+            // Update status bar style based on the current theme
+            SystemChrome.setSystemUIOverlayStyle(
+              SystemUiOverlayStyle(
+                statusBarIconBrightness: Brightness.light,
+                // isDarkMode ? Brightness.light : Brightness.dark,
+              ),
+            );
+
+            return MaterialApp(
+              debugShowCheckedModeBanner: false,
+              title: 'Smart Recipe',
+              theme: lightTheme,
+              darkTheme: darkTheme,
+              themeMode: isDarkMode ? ThemeMode.dark : ThemeMode.light,
+              onGenerateRoute: generateRoute,
+              initialRoute: homeScreen,
+            );
+          },
         ),
       ),
     );
